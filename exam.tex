@@ -133,6 +133,10 @@ Then
 \end{align*}
 \end{proof}
 
+\begin{corollary}\label{cor2}
+Let $n \in \mathbb{N}$, $x \in \mathbb{R}^n$, and $p, q \in \mathbb{R}$ such that $0 < p < q$. Then $\norm{x}_q \ge \norm{x}_p n^{\frac{1}{q} - \frac{1}{p}}$.
+\end{corollary}
+
 With that scaffolding done, we prove the main theorem.
 
 \begin{proof}
@@ -148,14 +152,14 @@ For $k > 1$, since $k \in \mathbb{N}$, we have $k \ge 2$. We also have
 \sqrt[k]{n} \frac{m}{n} &= \frac{\sqrt[k]{n}}{n} m\\
                         &= \frac{\sqrt[k]{n}}{\left(\sqrt[k]{n}\right)^k} \norm{f}_1\\
                         &= \frac{1}{\left(\sqrt[k]{n}\right)^{k-1}} \norm{f}_1\\
-                        &= n^{\frac{k-1}{k}} \norm{f}_1\\
-                        &= n^{1 - \frac{1}{k}} \norm{f}_1
+                        &= n^{-\frac{k-1}{k}} \norm{f}_1\\
+                        &= n^{\frac{1}{k} - 1} \norm{f}_1
 \end{align*}
 
-Thus by \ref{lem1} we call $p = \frac{1}{k}$, $q = 1$ and since $0 < p < q$ we obtain
+Thus by \ref{cor2} we call $p = 1$, $q = k$ and since $0 < p < q$ we obtain
 
 \begin{align*}
-\norm{f}_k &\ge n^{1 - \frac{1}{k}} \norm{f}_1\\
+\norm{f}_k &\ge n^{\frac{1}{k} - 1} \norm{f}_1\\
            &= \sqrt[k]{n} \frac{m}{n}
 \end{align*}
 
