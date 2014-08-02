@@ -1,0 +1,165 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage[german,spanish,english]{babel}
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\title{Sublinear algorithms exam}
+\author{Fernandez Abrevaya, Lebrón, Vassiliev}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+\addtocounter{section}{1}
+\setcounter{theorem}{0}
+
+
+\begin{theorem}[Chernoff \#1]\label{cher1}
+Let $X_1, \dots, X_t$ be i.i.d. discrete random variables, with range $[0, 1]$ and mean $\mu$. Then if $X = \frac{\sum_{i=1}^t X_i}{t}$, and $0 < \delta < 1$, we have
+
+$$
+P[|X - \mu| \ge \delta \mu] \le 2 e^{\frac{-t \mu \delta^2}{3}}
+$$
+\end{theorem}
+
+\begin{theorem}[Chernoff \#2]\label{cher2}
+Let $X_1, \dots, X_t$ be i.i.d. discrete random variables, with range $[0, c]$ and mean $\mu$. Then if $X = \frac{\sum_{i=1}^t X_i}{t}$, and $0 < \delta < 1$, we have
+
+$$
+P[|X - \mu| \ge \delta \mu] \le 2 e^{\frac{-t \mu \delta^2}{3c}}
+$$
+\end{theorem}
+
+We must show that \ref{cher2} follows from \ref{cher1}.
+
+\begin{proof}
+Let $X_1, \dots, X_t$ be i.i.d. discrete random variables, with range $[0, c]$ and mean $\mu$. Let $X = \frac{\sum_{i=1}^t X_i}{t}$, and $0 < \delta < 1$. We must show that $P\left[\left|X_i - \mu\right| \ge \delta \mu\right] \le 2 e^{\frac{-t \mu \delta^2}{3c}}$.
+
+For $1 \le i \le t$, call $Y_i = \frac{X_i}{c}$. If the p.d.f. for $X_i$ was $f$, then the p.d.f. for $Y_i$ is $\frac{f}{c}$, thus the $Y_i$ are identically distributed. Furthermore they are independent, since if $1 \le i, j \le t$ and $0 \le y, y' \le c$, then
+
+\begin{align*}
+P[Y_i = y, Y_j = y'] &= P\left[\frac{X_i}{c} = y,  \frac{X_j}{c} = y'\right]&\\
+                     &= P[X_i = cy, X_j = cy']&\\
+                     &= P[X_i = cy] \cdot P[X_j = cy'] &\text{Because $X_i$ are independent}\\
+                     &= P\left[\frac{X_i}{c} = y\right] \cdot P\left[\frac{X_j}{c} = y'\right]&\\
+                     &= P[Y_i = y] \cdot P[Y_j = y']&
+\end{align*}
+
+Since the range of $X_i$ is $[0, c]$, the range of $Y_i = \frac{X_i}{c}$ is $\left[\frac{0}{c}, \frac{c}{c}\right] = [0, 1]$. Lastly, we can compute their expected value. For $1 \le i \le t$ we have $\mathbb{E}[Y_i] = \mathbb{E}\left[\frac{X_i}{c}\right] = \frac{\mathbb{E}\left[X_i\right]}{c} = \frac{\mu}{c}$ by linearity of expectation.
+
+Thus by \ref{cher1}, we know that for $1 \le i \le n$
+
+$$
+P\left[\underbrace{\left|Y_i - \frac{\mu}{c}\right| \ge \delta \frac{\mu}{c}}_{\theta}\right] \le 2 e^{\frac{-t \frac{\mu}{c} \delta^2}{3}}
+$$
+
+We also know $Y_i = \frac{X_i}{c}$, so $\left|Y_i - \frac{\mu}{c}\right| = \left|\frac{X_i}{c} - \frac{\mu}{c}\right| = \left|\frac{X_i - \mu}{c}\right| = \frac{\left|X_i - \mu\right|}{c}$, since $c > 0$. Thus in $\theta$ we can multiply both sides of the inequality by $c$ and obtain
+
+$$
+P\left[\left|X_i - \mu\right| \ge \delta \mu\right] \le 2 e^{\frac{-t \frac{\mu}{c} \delta^2}{3}}
+$$
+
+The exponent on the right hand side is clearly $\frac{-t \mu \delta^2}{3c}$, which completes the proof of \ref{cher2}.
+\end{proof}
+
+
+\section*{Problem 5}
+\addtocounter{section}{1}
+\setcounter{theorem}{0}
+
+\begin{theorem}Let $x = \langle x_1, \dots, x_m \rangle$, $f = \langle f_1, \dots, f_n \rangle$, where $f_i$ is the frequency of the $i$th distinct item in the list $x$. Let $F_k = \sum_{i=1}^n f_i^k$.
+
+Then $F_k \ge n \left(\frac{m}{n}\right)^k$.
+\end{theorem}
+
+We require a few auxiliary results to prove this.
+
+\begin{theorem}[Hölder inequality for $\mathbb{R}^n$] Let $p, q \in [1, \infty]$ such that $\frac{1}{p} + \frac{1}{q} = 1$. Let $n \in \mathbb{N}$, $a, b \in \mathbb{R}^n$. Then
+
+$$
+\sum_{i=1}^m |a_i b_i| \le \left(\sum_{i=1}^m |a_i|^p\right)^{\frac{1}{p}} + \left(\sum_{i=1}^m |b_i|^q\right)^{\frac{1}{q}}
+$$
+\end{theorem}
+
+\begin{corollary}\label{cor1}
+Let $r \in [1, \infty]$, $n \in \mathbb{N}$, $a, b \in \mathbb{R}^n$. Then
+
+$$
+\sum_{i=1}^m |a_i b_i| \le \left(\sum_{i=1}^m |a_i|^r\right)^{\frac{1}{r}} + \left(\sum_{i=1}^m |b_i|^{\frac{r}{r-1}}\right)^{1 - \frac{1}{r}}
+$$
+\end{corollary}
+
+\begin{lemma}\label{lem1}
+Let $n \in \mathbb{N}$, $x \in \mathbb{R}^n$, and $p, q \in \mathbb{R}$ such that $0 < p < q$. Then $\norm{x}_p \le \norm{x}_q n^{\frac{1}{p} - \frac{1}{q}}$.
+\end{lemma}
+\begin{proof}
+Use \ref{cor1} with $a_i = |x_i|^p, b_i = 1, r = \frac{q}{p}$ to obtain
+
+\begin{align*}
+\sum_{i = 1}^n |x_i|^p &= \sum_{i = 1}^n |x_i|^p \cdot 1\\
+                       &\le \left(\sum_{i=1}^n \left(|x_i|^p\right)^{\frac{q}{p}}\right)^{\frac{p}{q}} \left(\sum_{i=1}^n 1^{\frac{q}{q-p}}\right)^{1 - \frac{p}{q}}\\
+                       &= \left(\sum_{i=1}^n \left(|x_i|^p\right)^{\frac{q}{p}}\right)^{\frac{p}{q}} n^{1 - \frac{p}{q}}
+\end{align*}
+
+Then
+
+\begin{align*}
+\norm{x}_p &= \left(\sum_{i=1}^n |x_i|^p \right)^{\frac{1}{p}}\\
+           &\le \left(\left(\sum_{i=1}^n \left(|x_i|^p\right)^{\frac{q}{p}}\right)^{\frac{p}{q}} n^{1 - \frac{p}{q}}\right)^{\frac{1}{p}}\\
+           &= \left(\sum_{i=1}^n \left(|x_i|^p\right)^{\frac{q}{p}}\right)^{\frac{1}{q}} n^{\frac{1}{p} - \frac{1}{q}}\\
+           &= \norm{x}_q n^{\frac{1}{p} - \frac{1}{q}}
+\end{align*}
+\end{proof}
+
+With that scaffolding done, we prove the main theorem.
+
+\begin{proof}
+We must show that $F_k \ge n \left(\frac{m}{n}\right)^k$.
+
+We note that $m = \sum_{i=1}^n f_i = \sum_{i=1}^n |f_i| = \norm{f}_1$. We also note that $F_k = \sum_{i=1}^n f_i^k = \sum_{i=1}^n |f_i|^k = \left(\norm{f}_k\right)^k$.
+
+Thus, for $k = 1$ the result is trivial.
+
+For $k > 1$, since $k \in \mathbb{N}$, we have $k \ge 2$. We also have
+
+\begin{align*}
+\sqrt[k]{n} \frac{m}{n} &= \frac{\sqrt[k]{n}}{n} m\\
+                        &= \frac{\sqrt[k]{n}}{\left(\sqrt[k]{n}\right)^k} \norm{f}_1\\
+                        &= \frac{1}{\left(\sqrt[k]{n}\right)^{k-1}} \norm{f}_1\\
+                        &= n^{\frac{k-1}{k}} \norm{f}_1\\
+                        &= n^{1 - \frac{1}{k}} \norm{f}_1
+\end{align*}
+
+Thus by \ref{lem1} we call $p = \frac{1}{k}$, $q = 1$ and since $0 < p < q$ we obtain
+
+\begin{align*}
+\norm{f}_k &\ge n^{1 - \frac{1}{k}} \norm{f}_1\\
+           &= \sqrt[k]{n} \frac{m}{n}
+\end{align*}
+
+Taking $k$th powers of both sides completes the proof.
+\end{proof}
+
+\end{document}  
