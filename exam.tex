@@ -6,6 +6,8 @@
 %\geometry{landscape}                % Activate for for rotated page geometry
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
 \usepackage{amssymb}
 \usepackage{epstopdf}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
@@ -84,6 +86,173 @@ $$
 The exponent on the right hand side is clearly $\frac{-t \mu \delta^2}{3c}$, which completes the proof of \ref{cher2}.
 \end{proof}
 
+
+\section*{Problem 2}
+\addtocounter{section}{1}
+\setcounter{theorem}{0}
+
+{\color{red}
+Acá se olvidó de pedir que $\mu > 0$ para que valga lo segundo, lo agrego en las hipótesis, ya le mandé un mail avisando.
+}
+
+\begin{theorem}[Chebyshev \#1]\label{cheb1}
+Let $X$ be a random variable with finite mean $\mu$ and variance $\sigma^2 \ne 0$. Then for every $c \in \mathbb{R}$, $c > 0$
+
+$$
+P\left[|X - \mu| \ge c \sigma\right] \le \frac{1}{c^2}
+$$
+\end{theorem}
+
+\begin{theorem}[Chebyshev \#2]\label{cheb2}
+Let $X$ be a random variable with finite mean $\mu > 0$ and variance $\sigma^2 \ne 0$. Then for every $c' \in \mathbb{R}$, $c' > 0$
+
+$$
+P\left[|X - \mu| \ge c' \mu\right] \le \frac{\sigma^2}{(c'\mu)^2}
+$$
+\end{theorem}
+
+We must show that \ref{cheb2} follows from \ref{cheb1}.
+
+\begin{proof}
+Let $X$ be a random variable with finite mean $\mu > 0$ and variance $\sigma^2 \ne 0$. Let $c' \in \mathbb{R}$, $c' > 0$.
+
+Let $c = \frac{c' \mu}{\sigma}$. Clearly $c \in \mathbb{R}$ and $c > 0$, since $\sigma = \sqrt{\sigma^2} > 0$, $\mu > 0$, and $c' > 0$.
+
+We use $X$ and $c$ in \ref{cheb1} to obtain the bound
+
+$$
+P\left[|X - \mu| \ge c \sigma\right] \le \frac{1}{c^2}
+$$
+
+Note that $c \sigma = \frac{c' \mu}{\sigma} \sigma = c' \mu$. Also note that $\frac{1}{c^2} = \left(\frac{1}{\frac{c' \mu}{\sigma}}\right)^2 = \frac{\sigma^2}{(c' \mu)^2}$, thus we obtain
+
+$$
+P\left[|X - \mu| \ge c' \mu\right] \le \frac{\sigma^2}{(c' \mu)^2}
+$$
+
+Completing the proof.
+\end{proof}
+
+
+
+\section*{Problem 3}
+\addtocounter{section}{1}
+\setcounter{theorem}{0}
+
+\begin{definition}
+Let $m \in \mathbb{N}$, $f = \langle f_1, \dots, f_m \rangle \in \mathbb{N}_0^m$, $k \in \mathbb{N}, k \le m$. We define
+
+$$
+Err^k(f) = \min_{g : \norm{g}_0 \le k}{\norm{f - g}_1}
+$$
+\end{definition}
+
+\begin{theorem}
+Let $m \in \mathbb{N}$, $f = \langle f_1, \dots, f_m \rangle \in \mathbb{N}_0^m$, $k \in \mathbb{N}, k \le m$. Then $Err^k(f) = \sum_{i \not\in S} |f_i|$, where $S$ is some set of indices of $k$ largest values in $f$.
+\end{theorem}
+
+We will use two axiliary lemmas.
+
+\begin{lemma}\label{lemS1}
+Let $m \in \mathbb{N}$, $f = \langle f_1, \dots, f_m \rangle \in \mathbb{N}_0^m$, $k \in \mathbb{N}, k \le m$. Let $g \in \mathbb{N}_0^m$ be such that $\norm{f - g}$ is minimized among the $g'$ such that $\norm{g'} \le k$.
+
+Then $g = f_S$ for some $S \subset [m]$.
+\end{lemma}
+
+\begin{proof}
+Let $T$ be the nonzero indices of $g$. Suppose, by contradiction, that for some index $i \in T$, we have $g_i \ne f_i$. In particular, $|f_i - g_i| > 0$.
+
+Let $g' \in \mathbb{N}_0^m$ be such that $g'_j = g_j \forall j \ne i$, and $g'_i = f_i$. We have changed an entry of $g$ that is in $T$, so we are not adding any new nonzero entries to $g$ (we may at most be removing one, that is, setting an entry to zero, if $f_i = 0$). Thus 
+
+\begin{align}\label{fit}
+\norm{g} \le \norm{g'}_0 \le k
+\end{align}
+
+Specifically, every index that is outside $T$ in $g'$ has a 0 in its entry.
+
+However, we find that
+
+\begin{align*}
+\norm{f - g}_1 &= \sum_{j = 1}^m |f_j - g_j|^1\\
+               &= \sum_{j = 1}^m |f_j - g_j|\\
+               &= \sum_{j \in T} |f_j - g_j| + \sum_{j \not\in T} |f_j - g_j|\\
+               &= \sum_{j \in T} |f_j - g_j| + \sum_{j \not\in T} |f_j| & \text{By definition of }T\\
+               &= |f_i - g_i| + \sum_{\substack{j \in T\\j \ne i}} |f_j - g_j| + \sum_{j \not\in T} |f_j|\\
+               &> 0 + \sum_{\substack{j \in T\\j \ne i}} |f_j - g_j| + \sum_{j \not\in T} |f_j| & \text{Since we are dropping a positive term}\\
+               &= |f_i - g'_i| + \sum_{\substack{j \in T\\j \ne i}} |f_j - g_j| + \sum_{j \not\in T} |f_j| & \text{By definition of }g'\\
+               &= |f_i - g'_i| + \sum_{\substack{j \in T\\j \ne i}} |f_j - g'_j| + \sum_{j \not\in T} |f_j| & \text{By definition of }g'\\
+               &= |f_i - g'_i| + \sum_{\substack{j \in T\\j \ne i}} |f_j - g'_j| + \sum_{j \not\in T} |f_j - g'_j| & \text{By definition of }g'\\
+               &= \sum_{j \in T} |f_j - g'_j| + \sum_{j \not\in T} |f_j - g'_j|\\
+               &= \sum_{j = 1}^m |f_j - g'_j|\\
+               &= \sum_{j = 1}^m |f_j - g'_j|^1\\
+               &= \norm{f - g'}_1
+\end{align*}
+
+So $\norm{f - g}_1 > \norm{f - g'}_1$, which is absurd by (\ref{fit}) and by definition of $g$ as minimizing that norm.
+\end{proof}
+
+\begin{lemma}\label{lemS2}
+Let $m \in \mathbb{N}$, $f = \langle f_1, \dots, f_m \rangle \in \mathbb{N}_0^m$, $k \in \mathbb{N}, k \le m$, $S$ be some set of indices of $k$ largest values in $f$, and $S'$ any set of indices of $f$, with $S' \le k$. 
+
+Then $\norm{f - f_S}_1 \le \norm{f - f_{S'}}_1$.
+\end{lemma}
+
+\begin{proof}
+Let us denote $s = \sum_{i = 1}^m |f_i|$.
+\begin{align*}
+\norm{f - f_S}_1 &= \sum_{i = 1}^m |f_i - {f_S}_i|\\
+                 &= \sum_{i \in S} |f_i - {f_S}_i| + \sum_{i \not\in S} |f_i - {f_S}_i|\\
+                 &= \sum_{i \in S} |f_i - f_i| + \sum_{i \not\in S} |f_i - 0| & \text{By definition of }f_S\\
+                 &= \sum_{i \not\in S} |f_i|\\
+                 &= s - \sum_{i \in S} |f_i| 
+\end{align*}
+
+Similarly $\norm{f - f_{S'}}_1 = s - \sum_{i \in S'} |f_i|$. But then, since $S$ are $k$ largest in $f$, it must be the case that their sum is also larger than the one of any set $S'$ of smaller size. That is, $\sum_{i \in S} |f_i| \ge \sum_{i \in S'} |f_i|$. By negating and adding $s$ to each side we obtain $\norm{f - f_S} \le \norm{f - f_{S'}}$, completing the proof.
+\end{proof}
+
+We now prove the main result.
+\begin{proof}
+Let $m \in \mathbb{N}$, $f = \langle f_1, \dots, f_m \rangle \in \mathbb{N}_0^m$, $k \in \mathbb{N}, k \le m$, and $S$ be some set of indices of $k$ largest values in $f$.
+
+We note by $f_S$ the vector in $\mathbb{N}_0^m$ such that
+
+$$
+{f_S}_i = \begin{cases}
+f_i & \text{if } i \in S\\
+0 & \text{otherwise}
+\end{cases}
+$$
+
+It is clear that, since $S$ is a set of indices, and $|S| = k$, then $\norm{f_S}_0 \le k$, since at least $m - k$ entries vanish when subscripting by $S$, thus $\norm{f_S}_0 = \sum_{i=1}^m |{f_S}_i|^0 = \sum_{i \in S} |{f_S}_i|^0 \le \sum_{i \in S} 1 = |S| = k$.
+
+We also see that
+
+\begin{align*}
+\norm{f - f_S}_1 &= \sum_{i = 1}^m |f_i - {f_S}_i|^1\\
+                 &= \sum_{i = 1}^m |f_i - {f_S}_i|\\
+                 &= \sum_{i \in S} |f_i - {f_S}_i| + \sum_{i \not\in S} |f_i - {f_S}_i|\\
+                 &= \sum_{i \in S} |f_i - f_i| + \sum_{i \not\in S} |f_i - 0| & \text{By definition of $f_S$}\\
+                 &= 0 + \sum_{i \not\in S} |f_i|
+\end{align*}
+
+Thus, since $Err^k(f)$ is the minimum over all suitable $g$s of $\norm{f - g}_1$, and $f_S$ is one suitable $g$ since $\norm{f_S}_0 \le k$, we know $Err^k(f) \le \norm{f - f_S}_1 =  \sum_{i \not\in S} |f_i|$.
+
+We now need to prove the symmetric bound, $Err^k(f) \ge \sum_{i \not\in S} |f_i|$.
+
+Let $g$ be any vector such that $\norm{g}_0 \le k$ and $\norm{f - g}_1$ is minimized. By definition, $Err^k(f) = \norm{f - g}_1$.
+
+
+We know by \ref{lemS1} that $g$ must be of the form $g = f_{S'}$ for some $S' \subset [m]$. By \ref{lemS2} we know $\norm{f - f_{S'}}_1 \ge \norm{f - f_S}_1$. Thus
+
+\begin{align*}
+Err^k(f) &= \norm{f - g}_1\\
+         &= \norm{f - f_{S'}}_1\\
+         &\ge \norm{f - f_S}_1\\
+         &= \sum_{i \not\in S} |f_i|
+\end{align*}
+
+This upper bound, along with the previous lower bound, shows $Err^k(f) = \sum_{i \not\in S} |f_i|$, completing the proof.
+\end{proof}
 
 \section*{Problem 5}
 \addtocounter{section}{1}
