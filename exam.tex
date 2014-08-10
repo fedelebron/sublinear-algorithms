@@ -108,6 +108,9 @@ $$
 \end{proof}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bigskip
 \section*{Problem 2}
 \addtocounter{section}{1}
 \setcounter{theorem}{0}
@@ -123,6 +126,7 @@ $$
 P\left[|X - \mu| \ge c \sigma\right] \le \frac{1}{c^2}
 $$
 \end{theorem}
+\medskip
 
 \begin{theorem}[Chebyshev \#2]\label{cheb2}
 Let $X$ be a random variable with finite mean $\mu > 0$ and variance $\sigma^2 \ne 0$. Then for every $c' \in \mathbb{R}$, $c' > 0$
@@ -131,13 +135,14 @@ $$
 P\left[|X - \mu| \ge c' \mu\right] \le \frac{\sigma^2}{(c'\mu)^2}
 $$
 \end{theorem}
+\medskip
 
 We must show that \ref{cheb2} follows from \ref{cheb1}.
+\bigskip
 
 \begin{proof}
-Let $X$ be a random variable with finite mean $\mu > 0$ and variance $\sigma^2 \ne 0$. Let $c' \in \mathbb{R}$, $c' > 0$.
-
-Let $c = \frac{c' \mu}{\sigma}$. Clearly $c \in \mathbb{R}$ and $c > 0$, since $\sigma = \sqrt{\sigma^2} > 0$, $\mu > 0$, and $c' > 0$.
+Let $X$ be a random variable with finite mean $\mu > 0$ and variance $\sigma^2 \ne 0$;
+$c' \in \mathbb{R}$ such that $c' > 0$; and let $c = \frac{c' \mu}{\sigma}$. Clearly $c \in \mathbb{R}$ and $c > 0$, since $\sigma = \sqrt{\sigma^2} > 0$, $\mu > 0$, and $c' > 0$.
 
 We use $X$ and $c$ in \ref{cheb1} to obtain the bound
 
@@ -155,7 +160,9 @@ Completing the proof.
 \end{proof}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\bigskip
 \section*{Problem 3}
 \addtocounter{section}{1}
 \setcounter{theorem}{0}
@@ -172,14 +179,13 @@ $$
 Let $m \in \mathbb{N}$, $f = \langle f_1, \dots, f_m \rangle \in \mathbb{N}_0^m$, $k \in \mathbb{N}, k \le m$. Then $Err^k(f) = \sum_{i \not\in S} |f_i|$, where $S$ is some set of indices of $k$ largest values in $f$.
 \end{theorem}
 
-We will use two axiliary lemmas.
+To prove this theorem we will use two axiliary lemmas:
 
 \begin{lemma}\label{lemS1}
 Let $m \in \mathbb{N}$, $f = \langle f_1, \dots, f_m \rangle \in \mathbb{N}_0^m$, $k \in \mathbb{N}, k \le m$. Let $g \in \mathbb{N}_0^m$ be such that $\norm{f - g}$ is minimized among the $g'$ such that $\norm{g'} \le k$.
 
 Then $g = f_S$ for some $S \subset [m]$.
 \end{lemma}
-
 \begin{proof}
 Let $T$ be the nonzero indices of $g$. Suppose, by contradiction, that for some index $i \in T$, we have $g_i \ne f_i$. In particular, $|f_i - g_i| > 0$.
 
@@ -274,6 +280,26 @@ Err^k(f) &= \norm{f - g}_1\\
 
 This upper bound, along with the previous lower bound, shows $Err^k(f) = \sum_{i \not\in S} |f_i|$, completing the proof.
 \end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bigskip
+\section*{Problem 4}
+\addtocounter{section}{1}
+\setcounter{theorem}{0}
+
+\begin{quote}
+	Let $S = \{ x_1, ..., x_m \}$ be a stream of $m$ elements taken from universe $[n] = \{1, 2, ..., n \}$. Define $rank(y) = \left| x \in S : x \leq y \right|$. Then the median of the stream is $M = x_i$, where $rank(x_i) = \frac{m}{2} + 1$, with $m$ odd.
+	Given an algorithm that returns $y = $ the median of a sample of size $t$ taken from $S$ (with replacement). If $t = O(n)$, is it true that, with probability $\geq \frac{2}{3}$, $M - \frac{n}{10} < y < M + \frac{n}{10}$? (i.e, does this algorithm give a $10\%$ approximate value of the median with probability $\geq \frac{2}{3}$?).
+\end{quote}
+
+\bigskip
+The anser is no. Let's see why.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Problem 5}
 \addtocounter{section}{1}
