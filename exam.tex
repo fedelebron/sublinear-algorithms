@@ -45,6 +45,7 @@ $$
 P[|X - \mu| \ge \delta \mu] \le 2 e^{\frac{-t \mu \delta^2}{3}}
 $$
 \end{theorem}
+\medskip
 
 \begin{theorem}[Chernoff \#2]\label{cher2}
 Let $X_1, \dots, X_t$ be i.i.d. discrete random variables, with range $[0, c]$ and mean $\mu$. Then if $X = \frac{\sum_{i=1}^t X_i}{t}$, and $0 < \delta < 1$, we have
@@ -53,37 +54,57 @@ $$
 P[|X - \mu| \ge \delta \mu] \le 2 e^{\frac{-t \mu \delta^2}{3c}}
 $$
 \end{theorem}
-
+\medskip
 We must show that \ref{cher2} follows from \ref{cher1}.
+
+\bigskip
 
 \begin{proof}
 Let $X_1, \dots, X_t$ be i.i.d. discrete random variables, with range $[0, c]$ and mean $\mu$. Let $X = \frac{\sum_{i=1}^t X_i}{t}$, and $0 < \delta < 1$. We must show that $P\left[\left|X_i - \mu\right| \ge \delta \mu\right] \le 2 e^{\frac{-t \mu \delta^2}{3c}}$.
 
 For $1 \le i \le t$, call $Y_i = \frac{X_i}{c}$. If the p.d.f. for $X_i$ was $f$, then the p.d.f. for $Y_i$ is $\frac{f}{c}$, thus the $Y_i$ are identically distributed. Furthermore they are independent, since if $1 \le i, j \le t$ and $0 \le y, y' \le c$, then
 
+{\color{red}
+En realidad despues mostras que el rango de Y es entre 0 y 1, por lo tanto $y$ y $y'$ no pueden ir enre 0 y c, no? Si es asi, yo pondria primero el rango de Y, y después probaría independencia (es un detalle menor que no cambia la demostración de independencia, nomás por prolijidad).
+}
+
 \begin{align*}
 P[Y_i = y, Y_j = y'] &= P\left[\frac{X_i}{c} = y,  \frac{X_j}{c} = y'\right]&\\
-                     &= P[X_i = cy, X_j = cy']&\\
-                     &= P[X_i = cy] \cdot P[X_j = cy'] &\text{Because $X_i$ are independent}\\
+                     &= P\left[X_i = cy, X_j = cy'\right]&\\
+                     &= P\left[X_i = cy \right] \cdot P\left[X_j = cy' \right] &\text{\emph{because $X_i$ and $X_j$ are independent}}\\
                      &= P\left[\frac{X_i}{c} = y\right] \cdot P\left[\frac{X_j}{c} = y'\right]&\\
-                     &= P[Y_i = y] \cdot P[Y_j = y']&
+                     &= P\left[Y_i = y\right] \cdot P\left[Y_j = y' \right]&
 \end{align*}
 
-Since the range of $X_i$ is $[0, c]$, the range of $Y_i = \frac{X_i}{c}$ is $\left[\frac{0}{c}, \frac{c}{c}\right] = [0, 1]$. Lastly, we can compute their expected value. For $1 \le i \le t$ we have $\mathbb{E}[Y_i] = \mathbb{E}\left[\frac{X_i}{c}\right] = \frac{\mathbb{E}\left[X_i\right]}{c} = \frac{\mu}{c}$ by linearity of expectation.
+Since the range of $X_i$ is $[0, c]$, the range of $Y_i = \frac{X_i}{c}$ is $\left[\frac{0}{c}, \frac{c}{c}\right] = [0, 1]$.
 
-Thus by \ref{cher1}, we know that for $1 \le i \le n$
+Finally, let's compute $Y_i$'s expected value. For $1 \le i \le t$ we have $\mathbb{E}[Y_i] = \mathbb{E}\left[\frac{X_i}{c}\right] = \frac{\mathbb{E}\left[X_i\right]}{c} = \frac{\mu}{c}$ by linearity of expectation. 
 
-$$
-P\left[\underbrace{\left|Y_i - \frac{\mu}{c}\right| \ge \delta \frac{\mu}{c}}_{\theta}\right] \le 2 e^{\frac{-t \frac{\mu}{c} \delta^2}{3}}
-$$
-
-We also know $Y_i = \frac{X_i}{c}$, so $\left|Y_i - \frac{\mu}{c}\right| = \left|\frac{X_i}{c} - \frac{\mu}{c}\right| = \left|\frac{X_i - \mu}{c}\right| = \frac{\left|X_i - \mu\right|}{c}$, since $c > 0$. Thus in $\theta$ we can multiply both sides of the inequality by $c$ and obtain
+Thus, if we make $Y = \frac{\sum_{i=1}^t Y_i}{t}$, by \ref{cher1} we know that for $1 \le i \le t$
 
 $$
-P\left[\left|X_i - \mu\right| \ge \delta \mu\right] \le 2 e^{\frac{-t \frac{\mu}{c} \delta^2}{3}}
+P\left[\underbrace{\left|Y - \frac{\mu}{c}\right| \ge \delta \frac{\mu}{c}}_{\theta}\right] \le 2 e^{\frac{-t \frac{\mu}{c} \delta^2}{3}}
 $$
 
-The exponent on the right hand side is clearly $\frac{-t \mu \delta^2}{3c}$, which completes the proof of \ref{cher2}.
+{\color{red}
+Esto lo cambie: antes decia "$Pr [|Y_i - \frac{\mu}{c}|]$ etc, agregue la sumatoria de las $Y_i$. Fijense que el teorema se usa tomando el promedio de los $X_i$ ($Y_i$ en este caso), y habla sobre la distancia entre "el promedio y la media", no entre la variable y la media.
+}
+
+We also know that $Y_i = \frac{X_i}{c}$, so 
+
+$$\left|Y - \frac{\mu}{c}\right| = 
+\left|\frac{\sum_{i=1}^t \frac{X_i}{c}}{t} - \frac{\mu}{c}\right| = 
+\left|\frac{\sum_{i=1}^t \frac{X_i}{t}}{c} - \frac{\mu}{c}\right| = 
+\left|\frac{X}{c} - \frac{\mu}{c}\right| = \left|\frac{X - \mu}{c}\right| = \frac{\left|X - \mu\right|}{c}$$
+
+since $c > 0$. Thus in $\theta$ we can multiply both sides of the inequality by $c$ and obtain
+
+$$
+P\left[\left|X - \mu\right| \ge \delta \mu\right] \le 2 e^{\frac{-t \frac{\mu}{c} \delta^2}{3}} = 2 e^{\frac{-t \mu \delta^2}{3c}}
+$$
+
+%The exponent on the right hand side is clearly $$, which completes the proof of \ref{cher2}.
+
 \end{proof}
 
 
